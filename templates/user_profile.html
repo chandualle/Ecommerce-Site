@@ -157,8 +157,8 @@
 <body>
 
   <div class="top-bar">
-    <h3>Product Dashboard</h3>
-    <p>Welcome, <strong>{{ user_name.capitalize() }}</strong> | <a href="/user_profile/{{ user_id }}">Profile</a> | <a href="/logout">Logout</a></p>
+    <h3>User Profile</h3>
+    <p>Welcome, {{ user_email }} | <a href="/index/{{ user_id }}">Home</a> | <a href="/logout">Logout</a></p>
   </div>
 
   <div class="note-form">
@@ -166,13 +166,13 @@
   </div>
 
   <div class="search-form">
-    <form action="{{ url_for('index', user_id=user_id) }}" method="GET" style="display:inline;">
+    <form action="{{ url_for('user_profile', user_id=user_id) }}" method="GET" style="display:inline;">
       <input type="text" name="query" placeholder="Search Products...">
       <button type="submit">Search</button>
     </form>
 
     {% if query %}
-      <a class="clear-search" href="/index/{{ user_id }}">Clear Search</a>
+      <a class="clear-search" href="/user_profile/{{ user_id }}">Clear Search</a>
     {% endif %}
   </div>
 
@@ -183,9 +183,12 @@
       <h4>{{ product.title }}</h4>
       <p class="product_info">{{ product.description }}</p>
       <p class="product_info">₹{{ product.price }}</p>
-      <p class="product_info" style="color: #555; font-size: 14px;">
-        Posted by: <strong>{{ product.author_name }}</strong>
-      </p>
+      <div class="actions">
+        <form action="/delete/{{ product.id }}/{{ user_id }}" method="POST">
+          <button type="submit">🗑️ Delete</button>
+        </form>
+        <!-- If you re-enable update later, you can add it back here -->
+      </div>
     </div>
     {% endfor %}
   </div>

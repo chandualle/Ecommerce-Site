@@ -25,6 +25,35 @@ def index(user_id):
     if query:
         search_term = f"%{query}%"
         cursor.execute('''
+    SELECT products.*, users.username AS author_name
+    FROM products
+    JOIN users ON products.user_id = users.id
+    WHERE title LIKE %s OR description LIKE %s
+''', (search_term, search_term))
+    else:
+        cursor.execute('''
+    SELECT products.*, users.username AS author_name
+    FROM products
+    JOIN users ON products.user_id = users.id
+''')
+    
+    products = cursor.fetchall()
+    conn.close()
+    
+    return render_template('index.html', user_name=session['user_name'], user_email=session['user_email'], products=products, query=query, user_id=user_id)
+
+@app.route('/user_profile/<int:user_id>')
+def user_profile(user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login_page'))
+
+    query = request.args.get('query')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    if query:
+        search_term = f"%{query}%"
+        cursor.execute('''
             SELECT * FROM products 
             WHERE user_id = %s AND (title LIKE %s OR description LIKE %s)
         ''', (user_id, search_term, search_term))
@@ -34,7 +63,7 @@ def index(user_id):
     products = cursor.fetchall()
     conn.close()
     
-    return render_template('index.html', user_email=session['user_email'], products=products, query=query, user_id=user_id)
+    return render_template('user_profile.html', user_email=session['user_email'], products=products, query=query, user_id=user_id)
 
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -85,7 +114,7 @@ def delete_product(note_id, user_id):
     conn.commit()
     conn.close()
 
-    return redirect(f'/index/{user_id}')
+    return redirect(f'/user_profile/{user_id}')
 
 @app.route('/sign_up', methods=['POST', 'GET'])
 def sign_up():
@@ -126,6 +155,7 @@ def login_page():
         if user and check_password_hash(user['password'], user_pw):
             session['user_id'] = user['id']
             session['user_email'] = user['email']
+            session['user_name'] = user['username']
             return redirect(url_for('index', user_id=user['id']))
         else:
             return render_template('login.html', error="Invalid email or password.")

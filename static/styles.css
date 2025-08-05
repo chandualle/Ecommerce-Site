@@ -1,0 +1,215 @@
+body {
+      font-family: Arial, sans-serif;
+      max-width: 100%;
+      margin: auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    /* Header */
+    .site-header {
+      background-color: #007bff;
+      padding: 15px 20px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .site-header .logo {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      border-top: 1px solid #ccc;
+    }
+
+    /* Buttons and Links */
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .note-form {
+      margin: 20px 0;
+    }
+
+    .note-form a {
+      padding: 8px 14px;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .note-form a:hover {
+      background-color: #218838;
+    }
+
+    /* Search */
+    .search-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .search-form {
+      flex: 1;
+      display: flex;
+    }
+
+    .search-form input[type="text"] {
+      padding: 8px;
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .search-form button {
+      padding: 8px 14px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    .search-form button:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-green, .btn-blue, .btn-red {
+      padding: 8px 14px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-green {
+      background-color: #28a745;
+    }
+
+    .btn-green:hover {
+      background-color: #218838;
+    }
+
+    .btn-blue {
+      background-color: #17a2b8;
+    }
+
+    .btn-blue:hover {
+      background-color: #138496;
+    }
+
+    .btn-red {
+      background-color: #dc3545;
+    }
+
+    .btn-red:hover {
+      background-color: #c82333;
+    }
+
+    .clear-search {
+      padding: 6px 12px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      font-size: 14px;
+    }
+
+    .clear-search:hover {
+      background-color: #495057;
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.01);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .product-card h4 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-card .product_info {
+      font-weight: bold;
+      color: #28a745;
+      font-size: 12px;
+      margin-bottom: 10px;
+      max-height: 3.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .product-card .posted-by {
+      font-size: 13px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    .product-card .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .product-card button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .product-card button:hover {
+      background-color: #c82333;
+    }

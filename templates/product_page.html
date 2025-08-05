@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.title }} - ShopNest</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .site-header {
+      background-color: #343a40;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-header .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .top-nav span {
+      font-size: 16px;
+    }
+
+    .product-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .product-image {
+      width: 300px;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .product-info {
+      margin-top: 20px;
+    }
+
+    .product-title {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 24px;
+      color: #28a745;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .product-description,
+    .product-seller,
+    .product-meta {
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .product-meta strong {
+      color: #333;
+    }
+
+    .button-row {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .buy-btn,
+    .cart-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    .buy-btn {
+      background-color: #007bff;
+    }
+
+    .buy-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .cart-btn {
+      background-color: #28a745;
+    }
+
+    .cart-btn:hover {
+      background-color: #1e7e34;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+  <header class="site-header">
+    <h2 class="logo">🛒 ShopNest</h2>
+    <nav class="top-nav">
+      <span>Welcome, {{ user_name }}</span>
+    </nav>
+  </header>
+
+
+  <div class="product-container">
+    <img src="{{ url_for('static', filename='uploads/' + product.image_filename) }}" alt="{{ product.title }}" class="product-image">
+
+    <div class="product-info">
+      <div class="product-title">{{ product.title }}</div>
+      <div class="product-price">₹{{ product.price }}</div>
+      <div class="product-description">{{ product.description }}</div>
+
+      <div class="product-meta"><strong>Full Description:</strong> {{ product.full_description }}</div>
+      <div class="product-meta"><strong>Category:</strong> {{ product.category }}</div>
+      <div class="product-meta"><strong>Brand:</strong> {{ product.brand }}</div>
+      <div class="product-meta"><strong>Features:</strong> {{ product.features }}</div>
+      <div class="product-meta"><strong>Delivery Info:</strong> {{ product.delivery_info }}</div>
+      <div class="product-seller"><em>Sold by: {{ product.username }}</em></div>
+    </div>
+
+    <div class="button-row">
+      <a href="#" class="buy-btn">Buy Now</a>
+      <a href="#" class="cart-btn">Add to Cart</a>
+    </div>
+  </div>
+
+  <a href="/index/{{ user_id }}" class="back-link">← Back to Homepage</a>
+
+  <footer>
+    <p>&copy; 2025 ShopNest. Built with ❤️ by Chandu.</p>
+  </footer>
+
+</body>
+</html>

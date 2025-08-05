@@ -63,7 +63,7 @@ def user_profile(user_id):
     products = cursor.fetchall()
     conn.close()
     
-    return render_template('user_profile.html', user_email=session['user_email'], products=products, query=query, user_id=user_id)
+    return render_template('user_profile.html', user_name=session['user_name'], user_email=session['user_email'], products=products, query=query, user_id=user_id)
 
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -72,6 +72,28 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/product/<int:product_id>/<int:user_id>')
+def product_details(product_id, user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login_page'))
+    
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT p.*, u.username 
+        FROM products p 
+        JOIN users u ON p.user_id = u.id 
+        WHERE p.id = %s
+    """, (product_id,))
+    product = cursor.fetchone()
+    conn.close()
+
+    if product:
+        return render_template('product_page.html', user_name=session['user_name'], user_id=user_id, product = product)
+    else:
+        return 'Product not found', 404
+
 
 @app.route('/add_product/<int:user_id>', methods=['GET', 'POST'])
 def add_product(user_id):
@@ -83,6 +105,11 @@ def add_product(user_id):
         description = request.form['description']
         price = request.form['price']
         image_file = request.files['image']
+        full_description = request.form['full_description']
+        category = request.form['category']
+        brand = request.form['brand']
+        features = request.form['features']
+        delivery_info = request.form['delivery_info']
 
         if image_file and allowed_file(image_file.filename):
             filename = secure_filename(image_file.filename)
@@ -92,16 +119,71 @@ def add_product(user_id):
             conn = get_connection()
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO products (user_id, title, description, price, image_filename)
-                VALUES (%s, %s, %s, %s, %s)
-            ''', (user_id, title, description, price, filename))
+                INSERT INTO products (user_id, title, description, price, image_filename, full_description, 
+                           category, brand, features, delivery_info)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ''', (user_id, title, description, price, filename, full_description, category, brand, features, delivery_info))
             conn.commit()
             conn.close()
             return redirect(f'/index/{user_id}')
         else:
             return "Invalid file type. Only images allowed."
 
-    return render_template('add_product.html', user_id=user_id)
+    return render_template('add_product.html', user_name=session['user_name'], user_id=user_id)
+
+@app.route('/add_to_cart/<int:product_id>/<int:user_id>')
+def add_to_cart(product_id, user_id):
+    if 'user_id' not in session or session['user_id'] != user_id:
+        return redirect(url_for('login_page'))
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Check if already in cart
+    cursor.execute("SELECT * FROM cart WHERE user_id = %s AND product_id = %s", (user_id, product_id))
+    existing = cursor.fetchone()
+
+    if not existing:
+        cursor.execute("INSERT INTO cart (user_id, product_id) VALUES (%s, %s)", (user_id, product_id))
+        conn.commit()
+
+    conn.close()
+    return redirect(url_for('index', user_id=user_id))
+
+@app.route('/my_cart/<int:user_id>')
+def my_cart(user_id):
+    if 'user_id' not in session or session['user_id'] != user_id:
+        return redirect(url_for('login_page'))
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Fetch cart items with full product details
+    cursor.execute("""
+        SELECT p.*, u.username AS author_name
+        FROM cart c
+        JOIN products p ON c.product_id = p.id
+        JOIN users u ON p.user_id = u.id
+        WHERE c.user_id = %s
+    """, (user_id,))
+    products = cursor.fetchall()
+    conn.close()
+
+    return render_template('my_cart.html', products=products, user_name=session['user_name'], user_id=user_id)
+
+@app.route('/remove_from_cart/<int:product_id>/<int:user_id>')
+def remove_from_cart(product_id, user_id):
+    if 'user_id' not in session or session['user_id'] != user_id:
+        return redirect(url_for('login_page'))
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM cart WHERE user_id = %s AND product_id = %s", (user_id, product_id))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('my_cart', user_id=user_id))
+
 
 @app.route('/delete/<int:note_id>/<int:user_id>', methods=['POST'])
 def delete_product(note_id, user_id):

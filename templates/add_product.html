@@ -2,84 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Product</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Product - ShopNest</title>
   <link rel="icon" href="{{ url_for('static', filename='FaviconImage.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
       margin: 0;
-      padding: 40px;
-      max-width: 600px;
-      margin: auto;
+      padding: 0;
     }
 
-    h3 {
-      text-align: center;
-      color: #333;
+    .site-header {
+      background-color: #343a40;
+      padding: 15px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-header .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .top-nav span {
+      font-size: 16px;
     }
 
     form {
       background-color: white;
+      max-width: 600px;
+      margin: 40px auto;
       padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     }
 
     label {
       display: block;
       margin-top: 15px;
-      font-weight: bold;
+      font-weight: 600;
     }
 
     input[type="text"],
     input[type="number"],
     input[type="file"],
+    select,
     textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      margin-top: 6px;
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 1em;
     }
 
+    textarea {
+      resize: vertical;
+    }
+
     button {
-      margin-top: 20px;
-      padding: 10px 15px;
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
       background-color: #28a745;
       border: none;
       color: white;
       border-radius: 5px;
-      font-size: 1em;
+      font-size: 1.1em;
+      font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
       background-color: #218838;
     }
 
-    a {
-      display: inline-block;
+    .back-link {
+      display: block;
+      text-align: center;
       margin-top: 20px;
       color: #007bff;
       text-decoration: none;
+      font-weight: 500;
     }
 
-    a:hover {
+    .back-link:hover {
       text-decoration: underline;
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      margin-top: 60px;
     }
   </style>
 </head>
 <body>
-  <h3>Add New Product</h3>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <h2 class="logo">🛒 ShopNest</h2>
+    <nav class="top-nav">
+      <span>Add New Product - <strong>{{ user_name.capitalize() }}</strong></span>
+    </nav>
+  </header>
+
+  <!-- FORM -->
   <form method="post" action="{{ url_for('add_product', user_id=user_id) }}" enctype="multipart/form-data">
     <label for="title">Product Name</label>
     <input type="text" name="title" id="title" required>
 
-    <label for="description">Description</label>
-    <textarea name="description" id="description" rows="3" required></textarea>
+    <label for="description">Short Description</label>
+    <textarea name="description" id="description" rows="2" required></textarea>
 
     <label for="price">Price (₹)</label>
     <input type="number" name="price" id="price" step="0.01" required>
@@ -87,8 +129,35 @@
     <label for="image">Product Image</label>
     <input type="file" name="image" id="image" accept="image/*" required>
 
-    <button type="submit">Add Product</button>
+    <label for="full_description">Full Description</label>
+    <textarea name="full_description" id="full_description" rows="4"></textarea>
+
+    <label for="category">Category</label>
+    <select id="category" name="category">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+
+    <label for="brand">Brand</label>
+    <input type="text" name="brand" id="brand">
+
+    <label for="features">Product Features / Highlights</label>
+    <input type="text" name="features" id="features">
+
+    <label for="delivery_info">Delivery Info</label>
+    <input type="text" name="delivery_info" id="delivery_info">
+
+    <button type="submit">➕ Add Product</button>
   </form>
-  <a href="/index/{{ user_id }}">← Back to Homepage</a>
+
+  <a href="/index/{{ user_id }}" class="back-link">← Back to Homepage</a>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>&copy; 2025 ShopNest. Built with ❤️ by Chandu.</p>
+  </footer>
+
 </body>
 </html>

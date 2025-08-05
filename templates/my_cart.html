@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="{{ url_for('static', filename='FaviconImage.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <title>My Store Dashboard</title>
+  <title>My Cart</title>
 </head>
 <style>
     body {
@@ -183,7 +183,7 @@
   <header class="site-header">
     <h2 class="logo">🛒 ShopNest</h2>
     <nav class="top-nav">
-      <span><strong>{{ user_name.capitalize() }}'s </strong></span>
+      <span><strong>{{ user_name.capitalize() }}'s Cart</strong></span>
     </nav>
   </header>
 
@@ -216,7 +216,7 @@
 
       <div class="product-buttons">
         <a href="#" class="buy-btn">Buy Now</a>
-        <a href="#" class="cart-btn">Add to Cart</a>
+        <a href="{{ url_for('remove_from_cart', product_id=product.id, user_id=user_id) }}" class="cart-btn">Remove</a>
       </div>
     </div>
     {% endfor %}

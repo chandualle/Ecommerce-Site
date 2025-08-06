@@ -94,7 +94,6 @@ def product_details(product_id, user_id):
     else:
         return 'Product not found', 404
 
-
 @app.route('/add_product/<int:user_id>', methods=['GET', 'POST'])
 def add_product(user_id):
     if 'user_id' not in session:
@@ -148,7 +147,7 @@ def add_to_cart(product_id, user_id):
         conn.commit()
 
     conn.close()
-    return redirect(url_for('index', user_id=user_id))
+    return redirect(request.referrer or url_for('index', user_id=user_id))
 
 @app.route('/my_cart/<int:user_id>')
 def my_cart(user_id):
@@ -185,14 +184,14 @@ def remove_from_cart(product_id, user_id):
     return redirect(url_for('my_cart', user_id=user_id))
 
 
-@app.route('/delete/<int:note_id>/<int:user_id>', methods=['POST'])
-def delete_product(note_id, user_id):
+@app.route('/delete/<int:product_id>/<int:user_id>', methods=['POST'])
+def delete_product(product_id, user_id):
     if 'user_id' not in session:
         return redirect(url_for('login_page'))
 
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM products WHERE id = %s AND user_id = %s', (note_id, user_id))
+    cursor.execute('DELETE FROM products WHERE id = %s AND user_id = %s', (product_id, user_id))
     conn.commit()
     conn.close()
 

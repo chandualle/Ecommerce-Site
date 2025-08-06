@@ -224,7 +224,7 @@
       <p class="posted-by">Posted by: <strong>{{ product.author_name }}</strong></p>
 
       <div class="product-buttons">
-        <a href="#" class="buy-btn">Buy Now</a>
+        <a href="{{ url_for('product_details', product_id = product.id, user_id=user_id) }}" class="buy-btn">Buy Now</a>
         <a href="{{ url_for('add_to_cart', product_id=product.id, user_id=user_id) }}" class="cart-btn">Add to Cart</a>
       </div>
     </div>

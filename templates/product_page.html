@@ -146,8 +146,8 @@
     </div>
 
     <div class="button-row">
-      <a href="#" class="buy-btn">Buy Now</a>
-      <a href="#" class="cart-btn">Add to Cart</a>
+      <a href="#" class="buy-btn" onclick="confirmPurchase()">Confirm Purchase</a>
+      <a href="{{ url_for('add_to_cart', product_id=product.id, user_id=user_id) }}" class="cart-btn">Add to Cart</a>
     </div>
   </div>
 
@@ -156,6 +156,12 @@
   <footer>
     <p>&copy; 2025 ShopNest. Built with ❤️ by Chandu.</p>
   </footer>
+
+<script>
+  function confirmPurchase() {
+    alert("✅ Your product will be delivered soon!\n(Note: This is a demo project — payment feature is not implemented.)");
+  }
+</script>
 
 </body>
 </html>
